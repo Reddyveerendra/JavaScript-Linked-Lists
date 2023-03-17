@@ -31,6 +31,14 @@ class LinkedList {
         tail.next = new Node(value);
         return tail;
     }
+    prepend(value) {
+        if (!this.head) {
+            this.head = new Node(value);
+            return this;
+        }
+        const prevHead = this.head;
+        this.head = new Node(value, prevHead)
+    }
     size() {
         let count = 0;
         let list = this.head
@@ -87,10 +95,39 @@ class LinkedList {
         str += "null"
         return str;
     }
-
+    insertAt(value, index) {
+        const list = new Node(value);
+        if (index === 0) {
+            this.prepend(value);
+        }
+        if (index > this.size() - 1) {
+            this.append(value);
+            return this.toString();
+        }
+        let prev = this.at(index - 1);
+        list.next = prev.next;
+        prev.next = list;
+    }
+    removeAt(index) {
+        let pre = this.at(index - 1);
+        let after = this.at(index + 1);
+        pre.next = after;
+        return this;
+    }
+    pop() {
+        if (!this.head) {
+            return null;
+        }
+        let lastIndex = this.size();
+        let last = this.at(lastIndex - 2);
+        last.next = null;
+        return last;
+    }
 }
 const list = new LinkedList();
 list.append(1);
 list.append(3);
 list.append(4);
+list.insertAt(9, 7);
+list.pop();
 console.log(list.toString())
